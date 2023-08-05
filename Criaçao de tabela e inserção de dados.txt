@@ -1,0 +1,82 @@
+USE Loja
+
+CREATE TABLE Clientes
+(
+IDCliente INT PRIMARY KEY NOT NULL,
+Nome VARCHAR(60) NOT NULL,
+Email VARCHAR(60) UNIQUE NOT NULL, 
+);
+
+CREATE TABLE Produto
+(
+IDProduto INT PRIMARY KEY NOT NULL,
+Nome VARCHAR(60) NOT NULL,
+Preco NUMERIC(10,2) CHECK(Preco >=0),
+IDCategoria INT NOT NULL) ;
+
+
+ALTER TABLE Produto
+ADD CONSTRAINT FKIDCatg FOREIGN KEY (IDCategoria) REFERENCES Categorias (IDCategoria)
+
+
+CREATE TABLE Vendas
+(
+IDVenda INT PRIMARY KEY NOT NULL,
+IDCliente INT NOT NULL,
+DataVenda DATE CHECK(DataVenda <= GETDATE())NOT NULL,
+CONSTRAINT FKIdCliente FOREIGN KEY (IDCliente) REFERENCES Clientes (IDCliente)
+);
+
+CREATE TABLE Categorias 
+(
+IDCategoria INT PRIMARY KEY NOT NULL,
+Nome VARCHAR(60) UNIQUE NOT NULL,
+);
+
+CREATE TABLE Estoque 
+(
+IDEstoque INT PRIMARY KEY NOT NULL,
+IDProduto INT NOT NULL,
+Quantidade INT CHECK(Quantidade >=0)
+);
+
+CREATE TABLE Funcionario
+(
+IDFuncionario INT PRIMARY KEY NOT NULL,
+Nome VARCHAR(60) NOT NULL,
+Cargo VARCHAR(60) NOT NULL,
+);
+
+
+USE Loja
+
+INSERT INTO Clientes (IDCliente, Nome, Email)
+VALUES (1, 'Joao Silva', 'joao@example.com'),
+	   (2, 'Maria Souza', 'maria@example.com'),
+	   (3, 'Pedro Santos', 'pedro@example.com');
+
+INSERT INTO Produto (IDProduto, Nome, Preco, IDCategoria)
+VALUES (1, 'Camiseta', 25.99, 1),
+	   (2, 'Calca Jeans', 49.90,2),
+	   (3, 'Tenis', 79.99,3);
+
+INSERT INTO Categorias (IDCategoria, Nome)
+VALUES (1, 'Roupas') 
+       (2,'Calcados'),
+	   (3,'Acessorios');
+	   ;
+
+INSERT INTO Vendas (IDVenda, IDCliente, DataVenda)
+VALUES (1,1,'2023-07-20'),
+	   (2,2,'2023-07-21'),
+	   (3,3,'2023-07-22');
+
+INSERT INTO Estoque (IDEstoque, IDProduto, Quantidade)
+VALUES (1,1, 100),
+	   (2,2, 50),
+	   (3,3, 80);
+
+INSERT INTO Funcionario (IDFuncionario, Nome, Cargo)
+VALUES (1, 'Ana Oliveira', 'Gerente'),
+	   (2, 'Rafael Lima', 'Vendedor'),
+	   (3, 'Carla Saantos', 'Caixa');
